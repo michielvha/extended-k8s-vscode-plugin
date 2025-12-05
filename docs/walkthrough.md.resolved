@@ -1,0 +1,246 @@
+# Extended Kubernetes VS Code Extension - Walkthrough
+
+## What We Built
+
+I've successfully implemented **Milestone 1** of the Extended Kubernetes VS Code Extension, creating a solid foundation with core Kustomize features.
+
+## Project Structure
+
+```
+extended-k8s-vscode-plugin/
+├── src/
+│   ├── extension.ts                    # Main extension entry point
+│   ├── kustomize/
+│   │   ├── navigationProvider.ts       # Ctrl+Click navigation
+│   │   ├── diagnosticsProvider.ts      # Real-time validation
+│   │   └── treeProvider.ts             # Tree view hierarchy
+│   └── utils/
+│       └── yamlParser.ts               # YAML parsing utilities
+├── .vscode/
+│   └── launch.json                     # Debug configuration
+├── package.json                        # Extension manifest
+├── tsconfig.json                       # TypeScript config
+├── webpack.config.js                   # Bundling config
+└── README.md                           # Documentation
+```
+
+## Features Implemented
+
+### 1. Smart Navigation (Ctrl+Click)
+
+**File**: [src/kustomize/navigationProvider.ts](file:///c:/Users/mike/code/extended-k8s-vscode-plugin/src/kustomize/navigationProvider.ts)
+
+The navigation provider enables developers to quickly jump between Kustomize files:
+
+- **Ctrl+Click** on any resource, base, component, or patch path
+- Automatically resolves relative paths
+- Handles both files and directories
+- Finds `kustomization.yaml` in directories
+
+**Supported fields**:
+- `resources`
+- `bases`
+- `components`
+- `patches`
+- `patchesStrategicMerge`
+- `patchesJson6902`
+- `configMapGenerator.files`
+- `secretGenerator.files`
+
+### 2. Real-time Diagnostics
+
+**File**: [src/kustomize/diagnosticsProvider.ts](file:///c:/Users/mike/code/extended-k8s-vscode-plugin/src/kustomize/diagnosticsProvider.ts)
+
+Validates Kustomize files as you type:
+
+**Error Detection**:
+- ❌ Broken file references (file doesn't exist)
+- ❌ Missing kustomization files in bases/components
+- ❌ Invalid directory references
+
+**Warnings**:
+- ⚠️ Deprecated `patchesStrategicMerge` (use `patches` instead)
+- ⚠️ Deprecated `patchesJson6902` (use `patches` instead)
+
+The diagnostics update automatically when you:
+- Open a kustomization file
+- Save changes
+- Edit the document
+
+### 3. Kustomize Tree View
+
+**File**: [src/kustomize/treeProvider.ts](file:///c:/Users/mike/code/extended-k8s-vscode-plugin/src/kustomize/treeProvider.ts)
+
+Visual hierarchy in the Explorer sidebar showing:
+
+- 📁 All kustomization files in workspace
+- 📂 Bases (with folder-library icon)
+- 📦 Components (with package icon)
+- 📄 Resources (with file icon)
+- Clickable items to open files
+
+**Features**:
+- Auto-refresh when files change
+- Collapsible sections
+- Resource count display
+- Organized by type (Bases, Components, Resources)
+
+### 4. YAML Parser Utilities
+
+**File**: [src/utils/yamlParser.ts](file:///c:/Users/mike/code/extended-k8s-vscode-plugin/src/utils/yamlParser.ts)
+
+Robust YAML parsing with:
+- Kustomization file parsing
+- Document type detection (Kubernetes, Kustomize, ArgoCD, Flux)
+- Flux variable extraction (`${VAR}` patterns)
+- Error handling for malformed YAML
+
+## Configuration
+
+The extension adds these settings to VS Code:
+
+```json
+{
+  "extendedK8s.kustomize.enabled": true,
+  "extendedK8s.kustomize.kustomizePath": "kustomize",
+  "extendedK8s.kustomize.autoPreview": false,
+  "extendedK8s.flux.enabled": true,
+  "extendedK8s.flux.highlightVariables": true,
+  "extendedK8s.argocd.enabled": true,
+  "extendedK8s.argocd.servers": []
+}
+```
+
+## Commands
+
+Registered commands (placeholders for future implementation):
+
+- `extendedK8s.kustomize.preview` - Preview Build Output
+- `extendedK8s.kustomize.build` - Run kustomize build
+- `extendedK8s.flux.reconcile` - Reconcile Flux resource
+- `extendedK8s.argocd.sync` - Sync ArgoCD application
+
+## Testing the Extension
+
+### 1. Launch Extension Host
+
+Press **F5** in VS Code to launch the extension in debug mode.
+
+### 2. Test Navigation
+
+1. Create a test `kustomization.yaml`:
+   ```yaml
+   apiVersion: kustomize.config.k8s.io/v1beta1
+   kind: Kustomization
+   
+   resources:
+     - deployment.yaml
+     - service.yaml
+   
+   bases:
+     - ../base
+   ```
+
+2. **Ctrl+Click** on `deployment.yaml` → Should jump to file
+3. **Ctrl+Click** on `../base` → Should jump to base/kustomization.yaml
+
+### 3. Test Diagnostics
+
+1. Add a broken reference:
+   ```yaml
+   resources:
+     - missing-file.yaml  # Should show error
+   ```
+
+2. Use deprecated field:
+   ```yaml
+   patchesStrategicMerge:  # Should show warning
+     - patch.yaml
+   ```
+
+### 4. Test Tree View
+
+1. Open the Explorer sidebar
+2. Find "Kustomize" section
+3. Expand to see hierarchy
+4. Click items to open files
+
+## Build Output
+
+✅ **Compilation successful**
+- TypeScript compiled without errors
+- Webpack bundled to [dist/extension.js](file:///c:/Users/mike/code/extended-k8s-vscode-plugin/dist/extension.js)
+- All dependencies installed
+- Source maps generated for debugging
+
+## Next Steps (Future Milestones)
+
+### Milestone 2: IntelliSense & Validation
+- Path auto-completion
+- Field name suggestions
+- Hover documentation
+- Find all references
+
+### Milestone 3: Tree View & Explorer
+- Enhanced dependency graph
+- Multi-root workspace support
+- Quick actions menu
+
+### Milestone 4: Preview & Visualization
+- Live `kustomize build` preview
+- Diff view (base vs overlay)
+- Syntax highlighting
+
+### Milestone 5+: ArgoCD & FluxCD
+- ArgoCD application management
+- Flux resource tree view
+- Variable substitution
+- Reconciliation triggers
+
+## Technical Highlights
+
+### Architecture Decisions
+
+1. **No LSP (for now)**: Started with direct VS Code API integration for simplicity. Can add LSP later for advanced features.
+
+2. **Modular Design**: Each feature in separate provider files for maintainability.
+
+3. **File System Watching**: Tree view auto-refreshes on file changes.
+
+4. **Error Handling**: Graceful degradation when YAML parsing fails.
+
+### Dependencies
+
+- `vscode-languageclient/server`: Ready for future LSP implementation
+- `yaml`: Robust YAML parsing
+- `@kubernetes/client-node`: For future Kubernetes API integration
+- `webpack`: Efficient bundling
+
+## Validation Results
+
+✅ Extension activates on workspace with kustomization files
+✅ Navigation provider registered for YAML files
+✅ Diagnostics collection created
+✅ Tree view provider registered
+✅ Commands registered in command palette
+✅ TypeScript compilation successful
+✅ Webpack bundling successful
+
+## How to Use
+
+1. **Install dependencies**: `npm install` ✅ Done
+2. **Compile**: `npm run compile` ✅ Done
+3. **Debug**: Press F5 in VS Code
+4. **Package**: `npm run package` (for production)
+
+## Summary
+
+We've successfully built a working VS Code extension with:
+- ✅ Complete project setup
+- ✅ Kustomize navigation (Ctrl+Click)
+- ✅ Real-time diagnostics
+- ✅ Tree view hierarchy
+- ✅ YAML parsing utilities
+- ✅ Compiled and ready to test
+
+The foundation is solid and ready for the next milestones!
