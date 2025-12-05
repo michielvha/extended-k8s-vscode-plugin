@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+        continue-on-error: true  # Remove this when you add linting
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true  # Remove this when you add tests
+
+      - name: Compile extension
+        run: npm run compile
+
+      - name: Package extension
+        run: npx vsce package
+
+      - name: Upload VSIX as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-vsix-${{ github.sha }}
+          path: '*.vsix'
+          retention-days: 30

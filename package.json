@@ -1,135 +1,135 @@
 {
-  "name": "extended-k8s-vscode-plugin",
-  "displayName": "Extended Kubernetes Tools",
-  "description": "Enhanced Kubernetes extension with ArgoCD, FluxCD, and advanced Kustomize support",
-  "version": "0.1.0",
-  "publisher": "extended-k8s",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "workspaceContains:**/kustomization.yaml",
-    "workspaceContains:**/kustomization.yml",
-    "onLanguage:yaml"
-  ],
-  "main": "./dist/extension.js",
-  "contributes": {
-    "configuration": {
-      "title": "Extended Kubernetes Tools",
-      "properties": {
-        "extendedK8s.kustomize.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable Kustomize features"
-        },
-        "extendedK8s.kustomize.kustomizePath": {
-          "type": "string",
-          "default": "kustomize",
-          "description": "Path to kustomize CLI"
-        },
-        "extendedK8s.kustomize.autoPreview": {
-          "type": "boolean",
-          "default": false,
-          "description": "Automatically build preview on save"
-        },
-        "extendedK8s.flux.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable Flux CD features"
-        },
-        "extendedK8s.flux.highlightVariables": {
-          "type": "boolean",
-          "default": true,
-          "description": "Highlight Flux variable substitutions"
-        },
-        "extendedK8s.argocd.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable ArgoCD features"
-        },
-        "extendedK8s.argocd.servers": {
-          "type": "array",
-          "default": [],
-          "description": "ArgoCD server configurations",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "url": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
+    "name": "extended-k8s-vscode-plugin",
+    "displayName": "Extended Kubernetes Tools",
+    "description": "Enhanced Kubernetes extension with ArgoCD, FluxCD, and advanced Kustomize support",
+    "version": "0.1.0",
+    "publisher": "extended-k8s",
+    "engines": {
+        "vscode": "^1.96.0"
     },
-    "commands": [
-      {
-        "command": "extendedK8s.kustomize.preview",
-        "title": "Kustomize: Preview Build Output"
-      },
-      {
-        "command": "extendedK8s.kustomize.build",
-        "title": "Kustomize: Build"
-      },
-      {
-        "command": "extendedK8s.flux.reconcile",
-        "title": "Flux: Reconcile Resource"
-      },
-      {
-        "command": "extendedK8s.argocd.sync",
-        "title": "ArgoCD: Sync Application"
-      }
+    "categories": [
+        "Other"
     ],
-    "views": {
-      "explorer": [
-        {
-          "id": "extendedK8s.kustomizeExplorer",
-          "name": "Kustomize"
+    "activationEvents": [
+        "workspaceContains:**/kustomization.yaml",
+        "workspaceContains:**/kustomization.yml",
+        "onLanguage:yaml"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "Extended Kubernetes Tools",
+            "properties": {
+                "extendedK8s.kustomize.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Kustomize features"
+                },
+                "extendedK8s.kustomize.kustomizePath": {
+                    "type": "string",
+                    "default": "kustomize",
+                    "description": "Path to kustomize CLI"
+                },
+                "extendedK8s.kustomize.autoPreview": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically build preview on save"
+                },
+                "extendedK8s.flux.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Flux CD features"
+                },
+                "extendedK8s.flux.highlightVariables": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight Flux variable substitutions"
+                },
+                "extendedK8s.argocd.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable ArgoCD features"
+                },
+                "extendedK8s.argocd.servers": {
+                    "type": "array",
+                    "default": [],
+                    "description": "ArgoCD server configurations",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "url": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         },
-        {
-          "id": "extendedK8s.fluxExplorer",
-          "name": "Flux CD"
-        },
-        {
-          "id": "extendedK8s.argoCDExplorer",
-          "name": "ArgoCD"
+        "commands": [
+            {
+                "command": "extendedK8s.kustomize.preview",
+                "title": "Kustomize: Preview Build Output"
+            },
+            {
+                "command": "extendedK8s.kustomize.build",
+                "title": "Kustomize: Build"
+            },
+            {
+                "command": "extendedK8s.flux.reconcile",
+                "title": "Flux: Reconcile Resource"
+            },
+            {
+                "command": "extendedK8s.argocd.sync",
+                "title": "ArgoCD: Sync Application"
+            }
+        ],
+        "views": {
+            "explorer": [
+                {
+                    "id": "extendedK8s.kustomizeExplorer",
+                    "name": "Kustomize"
+                },
+                {
+                    "id": "extendedK8s.fluxExplorer",
+                    "name": "Flux CD"
+                },
+                {
+                    "id": "extendedK8s.argoCDExplorer",
+                    "name": "ArgoCD"
+                }
+            ]
         }
-      ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.96.0",
+        "@types/node": "^22.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.18.0",
+        "@typescript-eslint/parser": "^8.18.0",
+        "eslint": "^9.17.0",
+        "typescript": "^5.7.2",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1",
+        "ts-loader": "^9.5.1"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^9.0.1",
+        "vscode-languageserver": "^9.0.1",
+        "vscode-languageserver-textdocument": "^1.0.12",
+        "yaml": "^2.6.1",
+        "@kubernetes/client-node": "^1.0.0"
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.85.0",
-    "@types/node": "18.x",
-    "@typescript-eslint/eslint-plugin": "^6.13.0",
-    "@typescript-eslint/parser": "^6.13.0",
-    "eslint": "^8.54.0",
-    "typescript": "^5.3.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "ts-loader": "^9.5.1"
-  },
-  "dependencies": {
-    "vscode-languageclient": "^9.0.1",
-    "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11",
-    "yaml": "^2.3.4",
-    "@kubernetes/client-node": "^0.20.0"
-  }
 }
