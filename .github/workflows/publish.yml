@@ -35,7 +35,7 @@ jobs:
         run: npm run compile
 
       - name: Package extension
-        run: npx vsce package
+        run: npx @vscode/vsce package
 
       - name: Publish to VS Code Marketplace
         uses: HaaLeo/publish-vscode-extension@v1

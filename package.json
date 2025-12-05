@@ -4,6 +4,14 @@
     "description": "Enhanced Kubernetes extension with ArgoCD, FluxCD, and advanced Kustomize support",
     "version": "0.1.0",
     "publisher": "extended-k8s",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/michielvha/extended-k8s-vscode-plugin"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/michielvha/extended-k8s-vscode-plugin/issues"
+    },
     "engines": {
         "vscode": "^1.96.0"
     },

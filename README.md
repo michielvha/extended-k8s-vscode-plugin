@@ -66,7 +66,3 @@ Enhanced Kubernetes extension with advanced support for **Kustomize**, **ArgoCD*
 ## Development
 
 See [kustomize_extension_design.md](./kustomize_extension_design.md) for the complete design plan and architecture.
-
-## License
-
-MIT
